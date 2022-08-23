@@ -85,10 +85,6 @@ class RecipeBook(Recipes):
                     return
         else:
             print("Please choose name, ingredients, or time")
-
-
-
-
         
     # main search recipe function
     def searchRecipe(self, search):
