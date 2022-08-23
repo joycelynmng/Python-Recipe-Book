@@ -8,7 +8,7 @@ class Recipes:
     def ingredientsArray(self): 
         try:
             numberOfIngredients = int(input("Enter the number of ingredients: ")) # first ask for the number of ingredients
-            arrayOfIngredients = list(map(str,input("Enter the ingredients: ").strip().split())) [:numberOfIngredients]
+            arrayOfIngredients = list(map(str,input("Enter the ingredients: ").replace(',', '').strip().split())) [:numberOfIngredients]
             # make the array by creating map that takes the number of inputs and then splits it into indexes
         except ValueError:
             print("You must enter a number")
@@ -34,23 +34,61 @@ class RecipeBook(Recipes):
     def addRecipe(self, recipeAdd):
         self.__recipeBook.append(recipeAdd)
 
-    # main delete recipe function # logic error with removing last index
+    # main delete recipe function 
     def deleteRecipe(self, deleteFood):
         for i in range(len(self.__recipeBook)):
             if self.__recipeBook[i].name == deleteFood:
                 self.__recipeBook.remove(recipeBook.__recipeBook[i])
                 print(f"{deleteFood} has been removed\n")
                 return
-            else:
-                print(f"{deleteFood} does not exist\n")
+            else: # logic error with removing last index if more than one index
+                print(f"{deleteFood} does not exist in your recipe book\n")
                 return
 
     # main modify function
+    def modifyRecipe(self, modify):
+        oldName = input("Please the name of the recipe you want to modify: ")
+        if modify == "name":
+            for i in range((len(self.__recipeBook))):
+                if self.__recipeBook[i].name == oldName:
+                    newName = input("Enter the new name of the recipe: ")
+                    self.__recipeBook[i].name = newName 
+                    print("\n")
+                    Recipes.returnRecipe(recipeBook.__recipeBook[i])
+                    return
+                else:
+                    print("This recipe name is not in the recipe book")
+                    return
+        elif modify == "ingredients":
+            for i in range(len(self.__recipeBook)):
+                if self.__recipeBook[i].name == oldName:
+                    print("\n")
+                    newIngredients = recipeBook.ingredientsArray()
+                    self.__recipeBook[i].ingredients = newIngredients
+                    print("\n")
+                    Recipes.returnRecipe(recipeBook.__recipeBook[i])
+                    return
+                else:
+                    print("This recipe name is not in the recipe book")
+                    return
+        elif modify == "time":
+            for i in range(len(self.__recipeBook)):
+                if self.__recipeBook[i].name == oldName:
+                    print("\n")
+                    newTime = int(input("How many minutes will it take to make this? "))
+                    self.__recipeBook[i].time = newTime 
+                    print("\n")
+                    Recipes.returnRecipe(recipeBook.__recipeBook[i])
+                    return
+                else:
+                    print("This recipe name is not in the recipe book")
+                    return
+        else:
+            print("Please choose name, ingredients, or time")
 
-    # prints recipeBook in beginning
-    def displayRecipes(self):
-        for i in range(0, len(self.__recipeBook)):
-            print(self.__recipeBook[i].name)
+
+
+
         
     # main search recipe function
     def searchRecipe(self, search):
@@ -60,9 +98,13 @@ class RecipeBook(Recipes):
                 Recipes.returnRecipe(recipeBook.__recipeBook[i])
                 return
             else:
-                print("Does not exist\n")
+                print("This recipe does not exist in this recipe book\n")
                 return
-        
+
+    # prints recipeBook in beginning
+    def displayRecipes(self):
+        for i in range(0, len(self.__recipeBook)):
+            print(self.__recipeBook[i].name)
 
 # main "home page" section
 options = {
@@ -89,8 +131,8 @@ while True: # asks user if they want to add anything new
         deleteFood = str(input("Which recipe you want to delete? "))
         recipeBook.deleteRecipe(deleteFood)
     elif answerChoice == "3":
-        modFood = input("Which would you like to modify? name, ingredients, or time: ")
-        recipeBook.___(modFood)
+        modFood = str(input("Would you like to modify the name, ingredients, or time? "))
+        recipeBook.modifyRecipe(modFood)
     elif answerChoice == "4":
         searchFood = str(input("Enter the the recipe you want to search? "))
         recipeBook.searchRecipe(searchFood)
